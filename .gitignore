@@ -91,6 +91,7 @@ cifar-10-python.tar.gz
 
 # --- Profiling / benchmark artifacts (Lab 1) -------------------------------
 trace.json
+lab1_gpu_basics/*_trace.json
 *.pt.trace.json
 *.chrome_trace
 *.perfetto-trace

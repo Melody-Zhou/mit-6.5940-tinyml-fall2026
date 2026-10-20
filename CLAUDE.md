@@ -9,7 +9,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - Course: https://hanlab.mit.edu/courses/2026-fall-65940
 - Course alias: https://efficientml.ai
 - Local GPU: NVIDIA RTX 4060
-- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy); Lab 1 is in progress. The README is the source of truth for lab status.
+- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy) and Lab 1 is complete on the local RTX 4060. The README is the source of truth for lab status.
 
 ## Repository Structure
 
@@ -19,9 +19,11 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 │   └── lab0.ipynb                 # Completed; outputs and 92.62% result preserved
 ├── lab1_gpu_basics/
 │   ├── README.md                  # Official course handout; do not edit
-│   ├── lab1.ipynb                 # Working notebook; complete in place
+│   ├── lab1.ipynb                 # Completed notebook; keep outputs
+│   ├── decode_layer_tracing.png   # Decode profiling timeline
+│   ├── mlp_cuda_graph_tracing.png # CUDA Graph profiling timeline
 │   ├── assets/                    # Official figures; do not edit
-│   └── utils/                     # Official helper code; do not edit
+│   └── utils/                     # Official helpers; config.py has the intentional 4060 spec
 ├── .gitignore
 ├── LICENSE
 └── README.md                      # Public index: labs, notes, setup, references
@@ -32,7 +34,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - **One notebook per lab.** Keep only the working/completed notebook (`labN_<topic>/labN.ipynb` or `lab0/lab0.ipynb`). Do not add pristine course templates, duplicate solution copies, or `*_impl.ipynb` files.
 - **Edit the official notebook in place.** Keep the course markdown, question numbering, and instructions. Replace `# YOUR CODE HERE` / `raise NotImplementedError()` cells and fill the `Your Answer:` prompts with measured results.
 - **Keep notebook outputs.** Completed notebooks retain execution outputs and plots; they document results (Lab 0 is ~600 KB for this reason). Do not strip outputs.
-- **Do not modify course-provided files** (`lab1_gpu_basics/README.md`, `utils/`, `assets/`) unless a task explicitly requires it. Put solutions in the notebook.
+- **Do not modify course-provided files** (`lab1_gpu_basics/README.md`, `utils/`, `assets/`) unless a task explicitly requires it. Put solutions in the notebook. Exception: the `4060` entry in `lab1_gpu_basics/utils/config.py` is an intentional local-hardware addition and must be kept.
 - **Run Lab 1 from `lab1_gpu_basics/`.** The notebook does `sys.path.insert(0, '.')` and loads `./assets/*.png`; starting Jupyter in that directory is required.
 - **Lab 0 keeps its official Colab setup cells.** The Google Drive mount and `pip install` cells are intentionally unexecuted locally; do not delete them just to run the notebook locally. Skip them instead.
 - **Update the README when a lab changes state.** Keep the Labs table status, notebook link, and accuracy/result current. Add new labs as their own `labN_<topic>/` directory with one notebook.
@@ -66,14 +68,14 @@ Lab 0 dependencies: PyTorch/torchvision, `torchprofile`, `tqdm`, and `matplotlib
 Notes:
 
 - The default shell may not have `torch` installed; use the environment configured in the notebook kernel.
-- Lab 1 exports `trace.json` via `prof.export_chrome_trace("trace.json")`; it is gitignored.
+- Lab 1 exports `trace.json`, `decode_layer_trace.json`, and `mlp_cuda_graph_trace.json`; they are gitignored.
 - On the local RTX 4060, `flash-attn` may need to compile from source. The Colab notebook variant is not tracked; if an A100 is needed, re-download the official handout or restore the backup.
 
 ## Git and Ignore Rules
 
 - Do not commit or push unless the user asks.
 - Keep the repository clean: one notebook per lab, no duplicate handouts, no archived course templates.
-- `.gitignore` intentionally ignores runtime artifacts (`trace.json`, `data/cifar10`, model weights, `*.zip`, caches, environments) but **must not ignore** course sources: `lab*/lab*.ipynb`, `lab1_gpu_basics/utils/**`, `assets/**`, lab READMEs, the root README, and `LICENSE`.
+- `.gitignore` intentionally ignores runtime artifacts (`trace.json`, `lab1_gpu_basics/*_trace.json`, `data/cifar10`, model weights, `*.zip`, caches, environments) but **must not ignore** course sources: `lab*/lab*.ipynb`, `lab1_gpu_basics/utils/**`, `assets/**`, lab READMEs, the root README, and `LICENSE`.
 - Do not add broad ignores for `data/`, `models/`, `utils/`, or `*.png`; future labs may ship source or data under those names.
 - `*.zip` is ignored because extracted course handouts are tracked. Do not commit archives.
 
@@ -89,7 +91,7 @@ find . -path ./.git -prune -o -type f -print | sort
 # Validate notebook JSON and expected cell counts
 python3 - <<'PY'
 import json
-for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 104)]:
+for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106)]:
     nb = json.load(open(rel))
     assert len(nb['cells']) == cells, (rel, len(nb['cells']))
     print('OK', rel, len(nb['cells']), 'cells')

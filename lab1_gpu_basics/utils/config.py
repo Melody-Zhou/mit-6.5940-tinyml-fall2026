@@ -232,6 +232,15 @@ GPU_SPECS = {
         "sram_kb": 128,
         "num_sms": 128,
     },
+    "4060": {
+        "fp16_tflops": 30.2,  # dense; (60.5 is with 2:4 sparsity)
+        "bf16_tflops": 30.2,
+        "fp32_tflops": 15.1,
+        "memory_bandwidth_tb_s": 0.272,
+        "memory_gb": 8,
+        "sram_kb": 128,  # per SM
+        "num_sms": 24,
+    },
 }
 
 def get_ridge_point(gpu_name: str, dtype: str = "fp16") -> float:

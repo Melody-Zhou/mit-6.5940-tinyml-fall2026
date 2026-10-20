@@ -31,7 +31,7 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | Lab | Topic | Status | Notebook | Official material |
 |:---:|-------|:------:|----------|-------------------|
 | 0 | PyTorch tutorial: VGG-11 variant on CIFAR-10 | ✅ Completed · 92.62% test accuracy | [lab0.ipynb](./lab0/lab0.ipynb) | [Colab](https://colab.research.google.com/drive/1PfVYxikSaVpCSD-cnmNLN4l7yx_4odmg) |
-| 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | 🚧 In progress · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
+| 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
 | 2 | Pruning | ⏳ Planned | — | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
 | 3 | Neural architecture search | ⏳ Planned | — | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
 | 4 | Quantization | ⏳ Planned | — | Handout TBA |
@@ -53,6 +53,8 @@ Unofficial lecture notes (in Chinese) are published in my [CSDN column](https://
 | 6 | Quantization (Part II) | [Read](https://blog.csdn.net/qq_40672115/article/details/167691738) |
 | 7 | Neural Architecture Search (Part I) | [Read](https://blog.csdn.net/qq_40672115/article/details/167700081) |
 | 8 | Neural Architecture Search (Part II) | [Read](https://blog.csdn.net/qq_40672115/article/details/167807879) |
+| 9 | Knowledge Distillation | [Read](https://blog.csdn.net/qq_40672115/article/details/168122345) |
+| 10 | MCUNet: TinyML on Microcontrollers | [Read](https://blog.csdn.net/qq_40672115/article/details/168434588) |
 
 ## Setup
 
@@ -89,9 +91,11 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 │   └── lab0.ipynb                 # Completed: VGG-11 variant on CIFAR-10 (92.62%)
 ├── lab1_gpu_basics/
 │   ├── README.md                  # Official Lab 1 handout and point breakdown
-│   ├── lab1.ipynb                 # Working notebook (local RTX 4060)
+│   ├── lab1.ipynb                 # Completed notebook (local RTX 4060)
+│   ├── decode_layer_tracing.png   # Decode profiling timeline
+│   ├── mlp_cuda_graph_tracing.png # CUDA Graph profiling timeline
 │   ├── assets/                    # Figures used by the notebook
-│   └── utils/                     # Benchmarking, config, model, visualization helpers
+│   └── utils/                     # Benchmarking, config (incl. the 4060 spec), model, visualization helpers
 ├── .gitignore
 ├── LICENSE
 └── README.md
