@@ -9,7 +9,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - Course: https://hanlab.mit.edu/courses/2026-fall-65940
 - Course alias: https://efficientml.ai
 - Local GPU: NVIDIA RTX 4060
-- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy) and Lab 1 is complete on the local RTX 4060. The README is the source of truth for lab status.
+- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, and the Lab 2 scaffold has been added (in progress). The README is the source of truth for lab status.
 
 ## Repository Structure
 
@@ -24,6 +24,8 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 │   ├── mlp_cuda_graph_tracing.png # CUDA Graph profiling timeline
 │   ├── assets/                    # Official figures; do not edit
 │   └── utils/                     # Official helpers; config.py has the intentional 4060 spec
+├── lab2/
+│   └── lab2_pruning.ipynb         # Working notebook (initial scaffold)
 ├── .gitignore
 ├── LICENSE
 └── README.md                      # Public index: labs, notes, setup, references
@@ -91,7 +93,7 @@ find . -path ./.git -prune -o -type f -print | sort
 # Validate notebook JSON and expected cell counts
 python3 - <<'PY'
 import json
-for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106)]:
+for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106), ('lab2/lab2_pruning.ipynb', 106)]:
     nb = json.load(open(rel))
     assert len(nb['cells']) == cells, (rel, len(nb['cells']))
     print('OK', rel, len(nb['cells']), 'cells')
