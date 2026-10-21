@@ -33,7 +33,7 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | 0 | PyTorch tutorial: VGG-11 variant on CIFAR-10 | ✅ Completed · 92.62% test accuracy | [lab0.ipynb](./lab0/lab0.ipynb) | [Colab](https://colab.research.google.com/drive/1PfVYxikSaVpCSD-cnmNLN4l7yx_4odmg) |
 | 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
 | 2 | Pruning | ✅ Completed · NVIDIA A30 | [lab2_pruning.ipynb](./lab2/lab2_pruning.ipynb) | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
-| 3 | Neural architecture search | ⏳ Planned | — | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
+| 3 | Neural architecture search | 🚧 In progress | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
 | 4 | Quantization | ⏳ Planned | — | Handout TBA |
 | 5 | LLM deployment on a laptop | ⏳ Planned | — | Handout TBA |
 
@@ -90,6 +90,12 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 - The notebook uses a repo-local Hugging Face cache at `lab2/.cache/huggingface` and runs in offline mode. The cache is gitignored. Start Jupyter from `lab2/` so `Path.cwd()` resolves to the lab directory.
 - On a fresh machine, the setup cell automatically falls back to the default Hugging Face cache in online mode when `lab2/.cache/huggingface` is absent. Accept the Gemma license and set `HF_TOKEN` for the one-time download; alternatively, pre-populate the cache to run fully offline.
 
+### Lab 3 — Neural architecture search
+
+- Open [lab3/lab3_nas.ipynb](./lab3/lab3_nas.ipynb) and run its Setup cell first.
+- The notebook downloads the MCUNet codebase and VWW dataset from Dropbox and installs `graphviz`, `thop`, and `onnx`; run it from `lab3/` so the extracted files and checkpoints resolve.
+- A CUDA GPU is required. The setup uses Colab-style `!wget` / `!pip` commands; adapt them to your local shell if needed.
+
 ## Repository Structure
 
 ```text
@@ -105,6 +111,8 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 │   └── utils/                     # Benchmarking, config (incl. the 4060 spec), model, visualization helpers
 ├── lab2/
 │   └── lab2_pruning.ipynb         # Completed notebook (NVIDIA A30; local HF cache)
+├── lab3/
+│   └── lab3_nas.ipynb             # Working notebook (initial scaffold)
 ├── .gitignore
 ├── LICENSE
 └── README.md
