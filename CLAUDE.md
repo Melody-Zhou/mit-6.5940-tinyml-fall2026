@@ -8,8 +8,8 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 
 - Course: https://hanlab.mit.edu/courses/2026-fall-65940
 - Course alias: https://efficientml.ai
-- Local GPU: NVIDIA RTX 4060
-- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, and the Lab 2 scaffold has been added (in progress). The README is the source of truth for lab status.
+- Local GPU: NVIDIA RTX 4060 (Lab 0/1); Lab 2 was completed on an NVIDIA A30 because the 4060 lacked VRAM.
+- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, and Lab 2 is complete on an NVIDIA A30. The README is the source of truth for lab status.
 
 ## Repository Structure
 
@@ -25,7 +25,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 │   ├── assets/                    # Official figures; do not edit
 │   └── utils/                     # Official helpers; config.py has the intentional 4060 spec
 ├── lab2/
-│   └── lab2_pruning.ipynb         # Working notebook (initial scaffold)
+│   └── lab2_pruning.ipynb         # Completed notebook (NVIDIA A30; local HF cache)
 ├── .gitignore
 ├── LICENSE
 └── README.md                      # Public index: labs, notes, setup, references
@@ -38,6 +38,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - **Keep notebook outputs.** Completed notebooks retain execution outputs and plots; they document results (Lab 0 is ~600 KB for this reason). Do not strip outputs.
 - **Do not modify course-provided files** (`lab1_gpu_basics/README.md`, `utils/`, `assets/`) unless a task explicitly requires it. Put solutions in the notebook. Exception: the `4060` entry in `lab1_gpu_basics/utils/config.py` is an intentional local-hardware addition and must be kept.
 - **Run Lab 1 from `lab1_gpu_basics/`.** The notebook does `sys.path.insert(0, '.')` and loads `./assets/*.png`; starting Jupyter in that directory is required.
+- **Run Lab 2 from `lab2/`.** The notebook resolves its offline Hugging Face cache from `Path.cwd()/.cache/huggingface`; the cache is gitignored. The reference run used an NVIDIA A30 because the RTX 4060 lacked VRAM.
 - **Lab 0 keeps its official Colab setup cells.** The Google Drive mount and `pip install` cells are intentionally unexecuted locally; do not delete them just to run the notebook locally. Skip them instead.
 - **Update the README when a lab changes state.** Keep the Labs table status, notebook link, and accuracy/result current. Add new labs as their own `labN_<topic>/` directory with one notebook.
 - **Notes are external.** Lecture notes are on CSDN (linked from the README); do not vendor them into the repository.
@@ -73,6 +74,12 @@ Notes:
 - Lab 1 exports `trace.json`, `decode_layer_trace.json`, and `mlp_cuda_graph_trace.json`; they are gitignored.
 - On the local RTX 4060, `flash-attn` may need to compile from source. The Colab notebook variant is not tracked; if an A100 is needed, re-download the official handout or restore the backup.
 
+### Lab 2 — Pruning
+
+- Run Jupyter from `lab2/`; the notebook expects `lab2/.cache/huggingface` and sets offline mode.
+- The cache is gitignored. If it is absent, the setup cell falls back to the default Hugging Face cache in online mode; accept the Gemma license and set `HF_TOKEN`, or pre-populate the cache for offline use.
+- Reference hardware: NVIDIA A30; the RTX 4060 lacked VRAM for the later training/fine-tuning steps.
+
 ## Git and Ignore Rules
 
 - Do not commit or push unless the user asks.
@@ -93,7 +100,7 @@ find . -path ./.git -prune -o -type f -print | sort
 # Validate notebook JSON and expected cell counts
 python3 - <<'PY'
 import json
-for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106), ('lab2/lab2_pruning.ipynb', 106)]:
+for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106), ('lab2/lab2_pruning.ipynb', 107)]:
     nb = json.load(open(rel))
     assert len(nb['cells']) == cells, (rel, len(nb['cells']))
     print('OK', rel, len(nb['cells']), 'cells')
