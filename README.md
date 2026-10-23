@@ -33,7 +33,7 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | 0 | PyTorch tutorial: VGG-11 variant on CIFAR-10 | ✅ Completed · 92.62% test accuracy | [lab0.ipynb](./lab0/lab0.ipynb) | [Colab](https://colab.research.google.com/drive/1PfVYxikSaVpCSD-cnmNLN4l7yx_4odmg) |
 | 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
 | 2 | Pruning | ✅ Completed · NVIDIA A30 | [lab2_pruning.ipynb](./lab2/lab2_pruning.ipynb) | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
-| 3 | Neural architecture search | 🚧 In progress | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
+| 3 | Neural architecture search | ✅ Completed | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
 | 4 | Quantization | ⏳ Planned | — | Handout TBA |
 | 5 | LLM deployment on a laptop | ⏳ Planned | — | Handout TBA |
 
@@ -55,6 +55,7 @@ Unofficial lecture notes (in Chinese) are published in my [CSDN column](https://
 | 8 | Neural Architecture Search (Part II) | [Read](https://blog.csdn.net/qq_40672115/article/details/167807879) |
 | 9 | Knowledge Distillation | [Read](https://blog.csdn.net/qq_40672115/article/details/168122345) |
 | 10 | MCUNet: TinyML on Microcontrollers | [Read](https://blog.csdn.net/qq_40672115/article/details/168434588) |
+| 11 | TinyEngine and Parallel Processing | [Read](https://blog.csdn.net/qq_40672115/article/details/168753582) |
 
 ## Setup
 
@@ -92,9 +93,10 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 
 ### Lab 3 — Neural architecture search
 
-- Open [lab3/lab3_nas.ipynb](./lab3/lab3_nas.ipynb) and run its Setup cell first.
-- The notebook downloads the MCUNet codebase and VWW dataset from Dropbox and installs `graphviz`, `thop`, and `onnx`; run it from `lab3/` so the extracted files and checkpoints resolve.
-- A CUDA GPU is required. The setup uses Colab-style `!wget` / `!pip` commands; adapt them to your local shell if needed.
+- Completed notebook: [lab3/lab3_nas.ipynb](./lab3/lab3_nas.ipynb).
+- The reference run uses a local offline asset layout: `lab3/mcunet_repo/` (MCUNet code, accuracy dataset, `vww_supernet.pth`) and `lab3/vww_data/` (VWW validation images). Both are gitignored; the notebook's setup cell selects them.
+- Run Jupyter from `lab3/`; a CUDA GPU, `graphviz`, `thop`, and `onnx` are required.
+- To rebuild the assets on a fresh machine, use the original Dropbox setup cell (kept commented in the notebook) or pre-populate those two directories.
 
 ## Repository Structure
 
@@ -112,7 +114,7 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 ├── lab2/
 │   └── lab2_pruning.ipynb         # Completed notebook (NVIDIA A30; local HF cache)
 ├── lab3/
-│   └── lab3_nas.ipynb             # Working notebook (initial scaffold)
+│   └── lab3_nas.ipynb             # Completed notebook (local offline assets)
 ├── .gitignore
 ├── LICENSE
 └── README.md
