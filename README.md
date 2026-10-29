@@ -34,7 +34,7 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
 | 2 | Pruning | ✅ Completed · NVIDIA A30 | [lab2_pruning.ipynb](./lab2/lab2_pruning.ipynb) | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
 | 3 | Neural architecture search | ✅ Completed | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
-| 4 | Quantization | ⏳ Planned | — | Handout TBA |
+| 4 | Quantization | 🚧 In progress | [lab4_quantization.ipynb](./lab4/lab4_quantization.ipynb) | Official notebook |
 | 5 | LLM deployment on a laptop | ⏳ Planned | — | Handout TBA |
 
 Only the working or completed notebook is kept for each lab; pristine course templates are intentionally not tracked. Lab 0 was completed locally, and the official Colab notebook is linked for reference. The Dropbox handout link may expire; the [course website](https://hanlab.mit.edu/courses/2026-fall-65940) is canonical.
@@ -98,6 +98,12 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 - Run Jupyter from `lab3/`; a CUDA GPU, `graphviz`, `thop`, and `onnx` are required.
 - To rebuild the assets on a fresh machine, use the original Dropbox setup cell (kept commented in the notebook) or pre-populate those two directories.
 
+### Lab 4 — Quantization
+
+- Open [lab4/lab4_quantization.ipynb](./lab4/lab4_quantization.ipynb) and run the local setup cell first.
+- The notebook uses a local offline layout: `lab4/models/opt-1.3b/` plus `lab4/data/huggingface/.lab4_data_ready` (both gitignored). If both exist, it uses the local OPT-1.3B model and datasets cache and forces offline mode; if both are missing, it falls back to `facebook/opt-1.3b` and the default Hugging Face cache; if only one exists, it reports an incomplete local cache.
+- Run Jupyter from `lab4/` so the relative model/data paths resolve. Cell 7 keeps the original `pip install` command commented; dependencies must be preinstalled.
+
 ## Repository Structure
 
 ```text
@@ -115,6 +121,8 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 │   └── lab2_pruning.ipynb         # Completed notebook (NVIDIA A30; local HF cache)
 ├── lab3/
 │   └── lab3_nas.ipynb             # Completed notebook (local offline assets)
+├── lab4/
+│   └── lab4_quantization.ipynb    # Working notebook (initial scaffold; local offline setup)
 ├── .gitignore
 ├── LICENSE
 └── README.md
