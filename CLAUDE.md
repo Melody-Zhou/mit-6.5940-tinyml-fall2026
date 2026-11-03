@@ -8,8 +8,8 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 
 - Course: https://hanlab.mit.edu/courses/2026-fall-65940
 - Course alias: https://efficientml.ai
-- Local GPU: NVIDIA RTX 4060 (Lab 0/1); Lab 2 was completed on an NVIDIA A30 because the 4060 lacked VRAM.
-- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, Lab 2 is complete on an NVIDIA A30, Lab 3 is complete using the local offline assets, and the Lab 4 scaffold has been added (in progress). The README is the source of truth for lab status.
+- Local GPU: NVIDIA RTX 4060 (Lab 0/1); Labs 2 and 4 were completed on an NVIDIA A30 because the 4060 lacked VRAM.
+- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, Lab 2 is complete on an NVIDIA A30, Lab 3 is complete using the local offline assets, and Lab 4 is complete on an NVIDIA A30 using the local offline assets. The README is the source of truth for lab status.
 
 ## Repository Structure
 
@@ -29,7 +29,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 ├── lab3/
 │   └── lab3_nas.ipynb             # Completed notebook (local offline assets)
 ├── lab4/
-│   └── lab4_quantization.ipynb    # Working notebook (initial scaffold; local offline setup)
+│   └── lab4_quantization.ipynb    # Completed notebook (NVIDIA A30; local offline setup)
 ├── .gitignore
 ├── LICENSE
 └── README.md                      # Public index: labs, notes, setup, references
@@ -44,7 +44,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - **Run Lab 1 from `lab1_gpu_basics/`.** The notebook does `sys.path.insert(0, '.')` and loads `./assets/*.png`; starting Jupyter in that directory is required.
 - **Run Lab 2 from `lab2/`.** The notebook resolves its offline Hugging Face cache from `Path.cwd()/.cache/huggingface`; the cache is gitignored. The reference run used an NVIDIA A30 because the RTX 4060 lacked VRAM.
 - **Run Lab 3 from `lab3/`.** The setup cell selects the local offline layout `lab3/mcunet_repo/` + `lab3/vww_data/` (both gitignored); the original Dropbox setup cell is kept commented. Later cells load checkpoints by relative path.
-- **Run Lab 4 from `lab4/`.** Its setup cell selects local `lab4/models/opt-1.3b/` + `lab4/data/huggingface/.lab4_data_ready` and forces offline mode; if both are absent it falls back to `facebook/opt-1.3b` and the default HF cache, and if only one exists it reports an incomplete cache. Cell 7 keeps the original `pip install` commented.
+- **Run Lab 4 from `lab4/`.** Its setup cell selects local `lab4/models/opt-1.3b/` + `lab4/data/huggingface/.lab4_data_ready` and forces offline mode; if both are absent it falls back to `facebook/opt-1.3b` and the default HF cache, and if only one exists it reports an incomplete cache. Cell 7 keeps the original `pip install` commented. The reference run used an NVIDIA A30 because the RTX 4060 lacked VRAM for OPT-1.3B.
 - **Lab 0 keeps its official Colab setup cells.** The Google Drive mount and `pip install` cells are intentionally unexecuted locally; do not delete them just to run the notebook locally. Skip them instead.
 - **Update the README when a lab changes state.** Keep the Labs table status, notebook link, and accuracy/result current. Add new labs as their own `labN_<topic>/` directory with one notebook.
 - **Notes are external.** Lecture notes are on CSDN (linked from the README); do not vendor them into the repository.
@@ -95,6 +95,8 @@ Notes:
 
 ### Lab 4 — Quantization
 
+- Completed notebook: [lab4/lab4_quantization.ipynb](./lab4/lab4_quantization.ipynb).
+- The reference run was performed on an **NVIDIA A30**; the RTX 4060 lacked VRAM for OPT-1.3B.
 - Run Jupyter from `lab4/` and run the local setup cell first.
 - The setup uses `lab4/models/opt-1.3b/` and `lab4/data/huggingface/.lab4_data_ready` when both exist (offline local mode); otherwise it falls back to `facebook/opt-1.3b` and the default HF cache, and raises if only one local asset exists.
 - `lab4/models/` and `lab4/data/` are gitignored. Cell 7 keeps the original `pip install` command commented; dependencies must be preinstalled.
