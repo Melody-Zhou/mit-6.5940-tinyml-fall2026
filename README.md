@@ -56,6 +56,9 @@ Unofficial lecture notes (in Chinese) are published in my [CSDN column](https://
 | 9 | Knowledge Distillation | [Read](https://blog.csdn.net/qq_40672115/article/details/168122345) |
 | 10 | MCUNet: TinyML on Microcontrollers | [Read](https://blog.csdn.net/qq_40672115/article/details/168434588) |
 | 11 | TinyEngine and Parallel Processing | [Read](https://blog.csdn.net/qq_40672115/article/details/168753582) |
+| 12 | Transformer and LLM | [Read](https://blog.csdn.net/qq_40672115/article/details/168880033) |
+| 13 | LLM Quantization and Deployment | [Read](https://blog.csdn.net/qq_40672115/article/details/169555812) |
+| 14 | LLM Post Training | [Read](https://blog.csdn.net/qq_40672115/article/details/169841232) |
 
 ## Setup
 
