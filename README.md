@@ -59,6 +59,7 @@ Unofficial lecture notes (in Chinese) are published in my [CSDN column](https://
 | 12 | Transformer and LLM | [Read](https://blog.csdn.net/qq_40672115/article/details/168880033) |
 | 13 | LLM Quantization and Deployment | [Read](https://blog.csdn.net/qq_40672115/article/details/169555812) |
 | 14 | LLM Post Training | [Read](https://blog.csdn.net/qq_40672115/article/details/169841232) |
+| 15 | Long-Context LLM | [Read](https://blog.csdn.net/qq_40672115/article/details/170144590) |
 | 16 | Vision Transformer | [Read](https://blog.csdn.net/qq_40672115/article/details/170240736) |
 
 ## Setup
