@@ -35,9 +35,9 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | 2 | Pruning | ✅ Completed · NVIDIA A30 | [lab2_pruning.ipynb](./lab2/lab2_pruning.ipynb) | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
 | 3 | Neural architecture search | ✅ Completed | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
 | 4 | Quantization | ✅ Completed · NVIDIA A30 | [lab4_quantization.ipynb](./lab4/lab4_quantization.ipynb) | [Colab](https://colab.research.google.com/drive/1r26Togpim59OcHDCD2UInWYQZKz6_wSO) |
-| 5 | LLM deployment on a laptop | ⏳ Planned | — | Handout TBA |
+| 5 | LLM deployment on edge devices | 🚧 In progress | [Lab 5 README](./lab5/README.md) | [Handout](./lab5/MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) · [Template](./lab5/Report%20template_%20MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) |
 
-Only the working or completed notebook is kept for each lab; pristine course templates are intentionally not tracked. Lab 0 was completed locally, and the official Colab notebook is linked for reference. The Dropbox handout link may expire; the [course website](https://hanlab.mit.edu/courses/2026-fall-65940) is canonical.
+Only the working or completed notebook is kept for each lab; pristine course templates are intentionally not tracked. Lab 0 was completed locally, and the official Colab notebook is linked for reference. Lab 5 is code-based, so its vendored source tree lives under [`lab5/tinychat-tutorial/`](./lab5/tinychat-tutorial/). The Dropbox handout link may expire; the [course website](https://hanlab.mit.edu/courses/2026-fall-65940) is canonical.
 
 ## Notes
 
@@ -108,6 +108,25 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 - The notebook uses a local offline layout: `lab4/models/opt-1.3b/` plus `lab4/data/huggingface/.lab4_data_ready` (both gitignored). If both exist, it uses the local OPT-1.3B model and datasets cache and forces offline mode; if both are missing, it falls back to `facebook/opt-1.3b` and the default Hugging Face cache; if only one exists, it reports an incomplete local cache.
 - Run Jupyter from `lab4/` so the relative model/data paths resolve. Cell 7 keeps the original `pip install` command commented; dependencies must be preinstalled.
 
+### Lab 5 — LLM deployment on edge devices
+
+- Official handout and submission template: [lab5/README.md](./lab5/README.md).
+- The TinyChatEngine tutorial is vendored under `lab5/tinychat-tutorial/` at upstream commit `f241215`. The LLaMA2-7B-chat int4 weights (~5.3 GB) are gitignored; download them with:
+
+```bash
+cd lab5/tinychat-tutorial/transformer
+python download_model.py --model LLaMA_7B_2_chat --QM QM_x86   # Intel/AMD
+# or: python download_model.py --model LLaMA_7B_2_chat --QM QM_ARM   # Apple M1/M2
+```
+
+- Build and evaluate from `lab5/tinychat-tutorial/transformer`:
+
+```bash
+./evaluate.sh reference          # sanity check / baseline
+./evaluate.sh loop_unrolling     # one technique at a time
+./evaluate.sh                    # all implementations
+```
+
 ## Repository Structure
 
 ```text
@@ -127,6 +146,11 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 │   └── lab3_nas.ipynb             # Completed notebook (local offline assets)
 ├── lab4/
 │   └── lab4_quantization.ipynb    # Completed notebook (NVIDIA A30; local offline setup)
+├── lab5/
+│   ├── README.md                  # Lab 5 setup, source snapshot, model download
+│   ├── MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx
+│   ├── Report template_ ...docx   # Official report template
+│   └── tinychat-tutorial/         # Vendored TinyChatEngine source (model weights ignored)
 ├── .gitignore
 ├── LICENSE
 └── README.md

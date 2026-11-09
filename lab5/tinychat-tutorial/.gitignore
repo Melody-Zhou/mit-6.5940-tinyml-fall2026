@@ -1,0 +1,38 @@
+# Vendored TinyChatEngine tutorial for MIT 6.5940 Lab 5.
+# The upstream repository is kept as a plain source snapshot; only downloaded
+# model weights and generated build outputs are ignored. Source, tests,
+# scripts, and small tokenizer assets are tracked.
+
+# Build outputs
+*.o
+*.a
+*.dSYM
+.build/
+build/
+build_profile/
+libtorch/
+
+# Local environments and caches
+.cache/
+.direnv/
+.envrc
+.swiftpm
+.venv
+.vs/
+.vscode/
+
+# Built executables
+test_*
+!test_*.cc
+!test_*.hpp
+demo
+profile_*
+!profile_*.cc
+!profile_*.sh
+transformer/chat
+
+# Downloaded LLaMA2-7B int4 model weights (~5.3 GB)
+transformer/INT4/
+
+# macOS
+.DS_Store

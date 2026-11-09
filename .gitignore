@@ -103,6 +103,12 @@ lab3/viz/
 lab4/models/
 lab4/data/
 
+# --- Lab 5 downloaded model assets -----------------------------------------
+# LLaMA2-7B int4 weights (~5.3 GB), regenerate with transformer/download_model.py.
+# The vendored TinyChatEngine source tree is tracked; generated build outputs
+# are covered by lab5/tinychat-tutorial/.gitignore.
+lab5/tinychat-tutorial/transformer/INT4/
+
 # --- Profiling / benchmark artifacts (Lab 1) -------------------------------
 trace.json
 lab1_gpu_basics/*_trace.json
