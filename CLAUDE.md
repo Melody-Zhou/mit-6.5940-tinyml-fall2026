@@ -9,7 +9,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - Course: https://hanlab.mit.edu/courses/2026-fall-65940
 - Course alias: https://efficientml.ai
 - Local GPU: NVIDIA RTX 4060 (Lab 0/1); Labs 2 and 4 were completed on an NVIDIA A30 because the 4060 lacked VRAM. Lab 5 runs on CPU.
-- At the time of writing: Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, Lab 2 is complete on an NVIDIA A30, Lab 3 is complete using the local offline assets, Lab 4 is complete on an NVIDIA A30 using the local offline assets, and Lab 5 is in progress with the TinyChatEngine source tree vendored and the int4 model weights kept local. The README is the source of truth for lab status.
+- At the time of writing: all five labs are complete. Lab 0 is complete (92.62% CIFAR-10 test accuracy), Lab 1 is complete on the local RTX 4060, Lab 2 is complete on an NVIDIA A30, Lab 3 is complete using the local offline assets, Lab 4 is complete on an NVIDIA A30 using the local offline assets, and Lab 5 is complete on x86 (report plus the vendored TinyChatEngine source tree). The README is the source of truth for lab status.
 
 ## Repository Structure
 
@@ -17,7 +17,7 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 .
 ├── lab0/
 │   └── lab0.ipynb                 # Completed; outputs and 92.62% result preserved
-├── lab1_gpu_basics/
+├── lab1/
 │   ├── README.md                  # Official course handout; do not edit
 │   ├── lab1.ipynb                 # Completed notebook; keep outputs
 │   ├── decode_layer_tracing.png   # Decode profiling timeline
@@ -32,6 +32,8 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 │   └── lab4_quantization.ipynb    # Completed notebook (NVIDIA A30; local offline setup)
 ├── lab5/
 │   ├── README.md                  # Lab 5 setup, source snapshot, model download
+│   ├── Report.md                  # Completed lab report
+│   ├── figures/                   # Kernel diagrams and plotting scripts
 │   ├── MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx
 │   ├── Report template_ ...docx   # Official report template
 │   └── tinychat-tutorial/         # Vendored TinyChatEngine source (model weights ignored)
@@ -45,12 +47,12 @@ Personal solutions to the labs of **MIT 6.5940: TinyML and Efficient AI Computin
 - **One notebook per lab.** Keep only the working/completed notebook (`labN_<topic>/labN.ipynb` or `lab0/lab0.ipynb`). Do not add pristine course templates, duplicate solution copies, or `*_impl.ipynb` files. Lab 5 is code-based: keep its vendored `lab5/tinychat-tutorial/` source tree instead of a notebook.
 - **Edit the official notebook in place.** Keep the course markdown, question numbering, and instructions. Replace `# YOUR CODE HERE` / `raise NotImplementedError()` cells and fill the `Your Answer:` prompts with measured results.
 - **Keep notebook outputs.** Completed notebooks retain execution outputs and plots; they document results (Lab 0 is ~600 KB for this reason). Do not strip outputs.
-- **Do not modify course-provided files** (`lab1_gpu_basics/README.md`, `utils/`, `assets/`) unless a task explicitly requires it. Put solutions in the notebook. Exception: the `4060` entry in `lab1_gpu_basics/utils/config.py` is an intentional local-hardware addition and must be kept.
-- **Run Lab 1 from `lab1_gpu_basics/`.** The notebook does `sys.path.insert(0, '.')` and loads `./assets/*.png`; starting Jupyter in that directory is required.
+- **Do not modify course-provided files** (`lab1/README.md`, `utils/`, `assets/`) unless a task explicitly requires it. Put solutions in the notebook. Exception: the `4060` entry in `lab1/utils/config.py` is an intentional local-hardware addition and must be kept.
+- **Run Lab 1 from `lab1/`.** The notebook does `sys.path.insert(0, '.')` and loads `./assets/*.png`; starting Jupyter in that directory is required.
 - **Run Lab 2 from `lab2/`.** The notebook resolves its offline Hugging Face cache from `Path.cwd()/.cache/huggingface`; the cache is gitignored. The reference run used an NVIDIA A30 because the RTX 4060 lacked VRAM.
 - **Run Lab 3 from `lab3/`.** The setup cell selects the local offline layout `lab3/mcunet_repo/` + `lab3/vww_data/` (both gitignored); the original Dropbox setup cell is kept commented. Later cells load checkpoints by relative path.
 - **Run Lab 4 from `lab4/`.** Its setup cell selects local `lab4/models/opt-1.3b/` + `lab4/data/huggingface/.lab4_data_ready` and forces offline mode; if both are absent it falls back to `facebook/opt-1.3b` and the default HF cache, and if only one exists it reports an incomplete cache. Cell 7 keeps the original `pip install` commented. The reference run used an NVIDIA A30 because the RTX 4060 lacked VRAM for OPT-1.3B.
-- **Run Lab 5 from `lab5/tinychat-tutorial/transformer/`.** The TinyChatEngine tutorial is a vendored source snapshot (upstream commit `f241215`); the LLaMA2-7B-chat int4 weights under `transformer/INT4/` (~5.3 GB) are downloaded separately and gitignored. Complete the `kernels/starter_code/` implementations and use `./evaluate.sh` from `transformer/`.
+- **Run Lab 5 from `lab5/tinychat-tutorial/transformer/`.** The TinyChatEngine tutorial is a vendored source snapshot (upstream commit `f241215`); the LLaMA2-7B-chat int4 weights under `transformer/INT4/` (~5.3 GB) are downloaded separately and gitignored. The x86 `kernels/starter_code/` implementations are complete; use `./evaluate.sh` from `transformer/` for validation.
 - **Lab 0 keeps its official Colab setup cells.** The Google Drive mount and `pip install` cells are intentionally unexecuted locally; do not delete them just to run the notebook locally. Skip them instead.
 - **Update the README when a lab changes state.** Keep the Labs table status, notebook link, and accuracy/result current. Add new labs as their own `labN_<topic>/` directory with one notebook or, for code-based labs, one vendored source tree.
 - **Notes are external.** Lecture notes are on CSDN (linked from the README); do not vendor them into the repository.
@@ -74,7 +76,7 @@ pip install --no-build-isolation flash-attn
 Run the local notebook:
 
 ```bash
-cd lab1_gpu_basics
+cd lab1
 jupyter lab lab1.ipynb    # or: jupyter notebook lab1.ipynb
 ```
 
@@ -109,17 +111,18 @@ Notes:
 
 ### Lab 5 — LLM deployment on edge devices
 
-- Official handout and report template: [lab5/README.md](./lab5/README.md).
+- Completed report: [lab5/Report.md](./lab5/Report.md); generated kernel diagrams and plotting scripts live under `lab5/figures/`.
+- Official materials: [Lab 5 folder](https://drive.google.com/drive/folders/1ZA9ZpLFHnEXr8sJ-e4lkJyMGvtoQ55A0), plus [lab5/README.md](./lab5/README.md) for local setup.
 - The TinyChatEngine tutorial is vendored under `lab5/tinychat-tutorial/` at upstream commit `f241215`; the nested Git metadata and submodules were replaced by a plain source snapshot.
 - The LLaMA2-7B-chat int4 weights (~5.3 GB) live in `lab5/tinychat-tutorial/transformer/INT4/` and are gitignored. Download them with `python download_model.py --model LLaMA_7B_2_chat --QM QM_x86` (Intel/AMD) or `--QM QM_ARM` (Apple M1/M2) from `transformer/`.
-- Build and evaluate from `lab5/tinychat-tutorial/transformer/`: `./evaluate.sh reference`, then individual techniques or all. The starter code is in `kernels/starter_code/`.
+- Build and evaluate from `lab5/tinychat-tutorial/transformer/`: `./evaluate.sh reference`, then individual techniques or all. The starter code is in `kernels/starter_code/`; the x86 implementations are complete. The reference run reports `all_techniques` at 15.617 ms / 16.785703 GOPs.
 - The source snapshot includes `transformer/json` (nlohmann/json) and the small tokenizer assets; only downloaded model weights and build outputs are ignored.
 
 ## Git and Ignore Rules
 
 - Do not commit or push unless the user asks.
 - Keep the repository clean: one notebook per lab (or one vendored source tree for Lab 5), no duplicate handouts, no archived course templates.
-- `.gitignore` intentionally ignores runtime artifacts (`trace.json`, `lab1_gpu_basics/*_trace.json`, `data/cifar10`, model weights, `*.zip`, caches, environments) but **must not ignore** course sources: `lab*/lab*.ipynb`, `lab1_gpu_basics/utils/**`, `assets/**`, lab READMEs, the root README, the Lab 5 vendored source, and `LICENSE`.
+- `.gitignore` intentionally ignores runtime artifacts (`trace.json`, `lab1/*_trace.json`, `data/cifar10`, model weights, `*.zip`, caches, environments) but **must not ignore** course sources: `lab*/lab*.ipynb`, `lab1/utils/**`, `assets/**`, lab READMEs, the root README, the Lab 5 vendored source, and `LICENSE`.
 - Do not add broad ignores for `data/`, `models/`, `utils/`, or `*.png`; future labs may ship source or data under those names.
 - Lab 5: track the vendored `lab5/tinychat-tutorial/` source, but never commit `lab5/tinychat-tutorial/transformer/INT4/` (the ~5.3 GB model) or generated build outputs. `*.zip` is ignored because extracted course handouts are tracked. Do not commit archives.
 
@@ -135,16 +138,16 @@ find . -path ./.git -prune -o -type f -print | sort
 # Validate notebook JSON and expected cell counts
 python3 - <<'PY'
 import json
-for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1_gpu_basics/lab1.ipynb', 106), ('lab2/lab2_pruning.ipynb', 107), ('lab3/lab3_nas.ipynb', 70), ('lab4/lab4_quantization.ipynb', 92)]:
+for rel, cells in [('lab0/lab0.ipynb', 55), ('lab1/lab1.ipynb', 106), ('lab2/lab2_pruning.ipynb', 107), ('lab3/lab3_nas.ipynb', 70), ('lab4/lab4_quantization.ipynb', 92)]:
     nb = json.load(open(rel))
     assert len(nb['cells']) == cells, (rel, len(nb['cells']))
     print('OK', rel, len(nb['cells']), 'cells')
 PY
 
 # Confirm runtime artifacts are ignored and course sources are not
-git check-ignore -v lab1_gpu_basics/trace.json lab0/data/cifar10/x
+git check-ignore -v lab1/trace.json lab0/data/cifar10/x
 git check-ignore -v lab5/tinychat-tutorial/transformer/INT4/models/LLaMA_7B_2_chat/decoder/embed_tokens/weight.bin
-if git check-ignore -q README.md lab1_gpu_basics/lab1.ipynb lab5/tinychat-tutorial/kernels/starter_code/reference.cc; then
+if git check-ignore -q README.md lab1/lab1.ipynb lab5/tinychat-tutorial/kernels/starter_code/reference.cc; then
   echo 'ERROR: course source is ignored'
 fi
 ```

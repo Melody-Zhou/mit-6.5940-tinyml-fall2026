@@ -74,22 +74,50 @@ void MatmulOperator::mat_mul_loop_unrolling(struct matmul_params *params) {
                 float s_a_2nd = params->A_scales[(row * k + ch) / block_size + 1];
                 // order of weights with QM_x86:
                 // origin order: (w0,w1), (w2,w3), (w4,w5), (w6,w7), (w8, w9), ... (w62,w63)
-                // QM_ARM order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
+                // QM_x86 order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
                 //               |--|
                 //               4 bits
                 //               |------|
                 //               8 bits (byte)
                 //            low|----------------------------------------------------------|high
                 //               0                         256 bit
-                // process 32 bytes of weigths (256 bit) = 2 blocks for each of unrolled `col`
+                // process 32 bytes of weights (256 bit) = 2 blocks for each of unrolled `col`
                 // intermediate variable to store sum of integer multiplication and accumulation
                 int intermediate_sum0 = 0, intermediate_sum1 = 0, intermediate_sum2 = 0, intermediate_sum3 = 0;
                 int intermediate_sum0_2nd = 0, intermediate_sum1_2nd = 0, intermediate_sum2_2nd = 0,
                     intermediate_sum3_2nd = 0;
                 for (int qj = 0; qj < 32; qj++) {
                     // TODO: decode a packed byte into two int8 in the range of (-8, 7)
+                    // Decode one packed byte for each of the four unrolled columns.
+                    // Low nibble  -> Block 0 weight (offset 0)
+                    // High nibble -> Block 1 weight (offset +32)
+                    const uint8_t packed0 = w0_int4[qj];
+                    const uint8_t packed1 = w1_int4[qj];
+                    const uint8_t packed2 = w2_int4[qj];
+                    const uint8_t packed3 = w3_int4[qj];
+
+                    const signed char w0_lo = (packed0 & 0x0F) - 8;
+                    const signed char w0_hi = (packed0 >> 4) - 8;
+                    const signed char w1_lo = (packed1 & 0x0F) - 8;
+                    const signed char w1_hi = (packed1 >> 4) - 8;
+                    const signed char w2_lo = (packed2 & 0x0F) - 8;
+                    const signed char w2_hi = (packed2 >> 4) - 8;
+                    const signed char w3_lo = (packed3 & 0x0F) - 8;
+                    const signed char w3_hi = (packed3 >> 4) - 8;
 
                     // TODO: int8 multiply and accumulate operation
+                    // A is shared by all four output columns.
+                    const int a_lo = a_int8[qj];
+                    const int a_hi = a_int8[qj + 32];
+
+                    intermediate_sum0 += a_lo * w0_lo;
+                    intermediate_sum0_2nd += a_hi * w0_hi;
+                    intermediate_sum1 += a_lo * w1_lo;
+                    intermediate_sum1_2nd += a_hi * w1_hi;
+                    intermediate_sum2 += a_lo * w2_lo;
+                    intermediate_sum2_2nd += a_hi * w2_hi;
+                    intermediate_sum3 += a_lo * w3_lo;
+                    intermediate_sum3_2nd += a_hi * w3_hi;
                 }
                 // dequantize the sum into floating point
                 acc0 += (float)intermediate_sum0 * s_a * s_w0;

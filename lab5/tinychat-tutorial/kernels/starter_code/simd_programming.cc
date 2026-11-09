@@ -86,7 +86,7 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
 #ifdef QM_x86
             // order of weights with QM_x86:
             // origin order: (w0,w1), (w2,w3), (w4,w5), (w6,w7), (w8, w9), ... (w62,w63)
-            // QM_ARM order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
+            // QM_x86 order: (w0,w32),(w1,w33),(w2,w34),(w3,w35),(w4, w36),... (w31,w63)
             //               |--|
             //               4 bits
             //               |------|
@@ -114,8 +114,8 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                    at: https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=AVX2
                 */
                 // TODO: Unpack 64 4-bit (one __mm256i) weights into 64 8-bit (two __mm256i)
-                // (1) load 256 bit from w_strat with _mm256_loadu_si256
-                // (2) use `_mm256_and_si256` and lowMask to extract the lower half of wegihts
+                // (1) load 256 bit from w_start with _mm256_loadu_si256
+                // (2) use `_mm256_and_si256` and lowMask to extract the lower half of weights
                 // (3) use `_mm256_srli_epi16` and `_mm256_and_si256` with lowMask to extract the upper half of weights
                 __m256i raw_w = _mm256_loadu_si256(w_start);
 
@@ -124,6 +124,10 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                 // Note: Store the lower half and upper half of weights into `w_0` and `w_128`, respectively
                 const __m256i zero_point = _mm256_set1_epi8(8);
                 __m256i w_0, w_128;
+                // Low nibble = Block 0 weights; high nibble = Block 1 weights.
+                w_0 = _mm256_sub_epi8(_mm256_and_si256(raw_w, lowMask), zero_point);
+                w_128 = _mm256_sub_epi8(
+                    _mm256_and_si256(_mm256_srli_epi16(raw_w, 4), lowMask), zero_point);
 
                 // Perform int8 dot product with _mm256_maddubs_epi16
                 /* Syntax of _mm256_maddubs_epi16:
@@ -152,6 +156,8 @@ void MatmulOperator::mat_mul_simd_programming(struct matmul_params *params) {
                 // Hint: use `_mm256_maddubs_epi16` to complete the following computation
                 // dot = ax * sy
                 // dot2 = ax2 * sy2
+                dot = _mm256_maddubs_epi16(ax, sy);
+                dot2 = _mm256_maddubs_epi16(ax2, sy2);
 
                 // Convert int32 vectors to floating point vectors
                 const __m256i ones = _mm256_set1_epi16(1);

@@ -2,7 +2,7 @@
 
 A hands-on lab for understanding efficiency fundamentals in AI through a detailed look at transformer decoder layers (latency, MAC/FLOPs, I/O, profiling, and Flash Attention).
 
-- **lab1(colab).ipynb:** For you to complete on Google Colab (images are embedded in the notebook). Upload the whole `lab1_gpu_basics` folder to your Google Drive, open this notebook from there, and run the Setup cell first.
+- **lab1(colab).ipynb:** For you to complete on Google Colab (images are embedded in the notebook). Upload the whole `lab1` folder to your Google Drive, open this notebook from there, and run the Setup cell first.
 - **lab1.ipynb:** Same content, for running locally on your own NVIDIA GPU (images are loaded from `assets/`, so they don't render on Colab).
 
 **Please submit only one notebook.**

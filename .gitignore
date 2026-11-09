@@ -111,7 +111,7 @@ lab5/tinychat-tutorial/transformer/INT4/
 
 # --- Profiling / benchmark artifacts (Lab 1) -------------------------------
 trace.json
-lab1_gpu_basics/*_trace.json
+lab1/*_trace.json
 *.pt.trace.json
 *.chrome_trace
 *.perfetto-trace

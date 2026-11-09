@@ -31,13 +31,13 @@ Implementation of MIT 6.5940 (**TinyML and Efficient AI Computing**, Fall 2026),
 | Lab | Topic | Status | Notebook | Official material |
 |:---:|-------|:------:|----------|-------------------|
 | 0 | PyTorch tutorial: VGG-11 variant on CIFAR-10 | ✅ Completed · 92.62% test accuracy | [lab0.ipynb](./lab0/lab0.ipynb) | [Colab](https://colab.research.google.com/drive/1PfVYxikSaVpCSD-cnmNLN4l7yx_4odmg) |
-| 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1_gpu_basics/lab1.ipynb) | [Lab README](./lab1_gpu_basics/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
+| 1 | GPU basics: metrics, roofline, profiling, FlashAttention (80 + 20 bonus) | ✅ Completed · local RTX 4060 | [lab1.ipynb](./lab1/lab1.ipynb) | [Lab README](./lab1/README.md) · [Handout](https://www.dropbox.com/scl/fi/y2zmly5aoekmsg7jq4954/lab1_gpu_basics.zip?rlkey=29v29mlm2muvm0c5teleiusvc&st=2xh5vnk3&dl=1) |
 | 2 | Pruning | ✅ Completed · NVIDIA A30 | [lab2_pruning.ipynb](./lab2/lab2_pruning.ipynb) | [Colab](https://colab.research.google.com/drive/1-HEcO8qxlbOgccAg6TyuDTOqWt1Jx45W) |
 | 3 | Neural architecture search | ✅ Completed | [lab3_nas.ipynb](./lab3/lab3_nas.ipynb) | [Colab](https://colab.research.google.com/drive/1g_o6v2EErRJKZx5pmX3r8dCsInVkVC7h) |
 | 4 | Quantization | ✅ Completed · NVIDIA A30 | [lab4_quantization.ipynb](./lab4/lab4_quantization.ipynb) | [Colab](https://colab.research.google.com/drive/1r26Togpim59OcHDCD2UInWYQZKz6_wSO) |
-| 5 | LLM deployment on edge devices | 🚧 In progress | [Lab 5 README](./lab5/README.md) | [Handout](./lab5/MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) · [Template](./lab5/Report%20template_%20MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) |
+| 5 | LLM deployment on edge devices | ✅ Completed · x86 · 16.79 GOPs | [Report](./lab5/Report.md) · [Lab 5 README](./lab5/README.md) | [Official folder](https://drive.google.com/drive/folders/1ZA9ZpLFHnEXr8sJ-e4lkJyMGvtoQ55A0) · [Handout](./lab5/MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) · [Template](./lab5/Report%20template_%20MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) |
 
-Only the working or completed notebook is kept for each lab; pristine course templates are intentionally not tracked. Lab 0 was completed locally, and the official Colab notebook is linked for reference. Lab 5 is code-based, so its vendored source tree lives under [`lab5/tinychat-tutorial/`](./lab5/tinychat-tutorial/). The Dropbox handout link may expire; the [course website](https://hanlab.mit.edu/courses/2026-fall-65940) is canonical.
+All five labs are complete. Lab 0 was completed locally, and the official Colab notebook is linked for reference. Lab 5 is code-based, so its report and vendored source tree live under [`lab5/`](./lab5/), with the generated kernel diagrams under [`lab5/figures/`](./lab5/figures/). The Dropbox handout link may expire; the [course website](https://hanlab.mit.edu/courses/2026-fall-65940) is canonical.
 
 ## Notes
 
@@ -59,6 +59,7 @@ Unofficial lecture notes (in Chinese) are published in my [CSDN column](https://
 | 12 | Transformer and LLM | [Read](https://blog.csdn.net/qq_40672115/article/details/168880033) |
 | 13 | LLM Quantization and Deployment | [Read](https://blog.csdn.net/qq_40672115/article/details/169555812) |
 | 14 | LLM Post Training | [Read](https://blog.csdn.net/qq_40672115/article/details/169841232) |
+| 16 | Vision Transformer | [Read](https://blog.csdn.net/qq_40672115/article/details/170240736) |
 
 ## Setup
 
@@ -73,9 +74,9 @@ Each lab has its own environment; only the essentials are listed here.
 
 ### Lab 1 — GPU basics
 
-- Full instructions and point breakdown: [lab1_gpu_basics/README.md](./lab1_gpu_basics/README.md).
+- Full instructions and point breakdown: [lab1/README.md](./lab1/README.md).
 - Target environment: local NVIDIA RTX 4060 with a CUDA-enabled PyTorch 2.x build ([install guide](https://pytorch.org/get-started/locally/)).
-- Start Jupyter from `lab1_gpu_basics/` so `utils/` imports and `assets/` images resolve.
+- Start Jupyter from `lab1/` so `utils/` imports and `assets/` images resolve.
 - Pinned dependencies from the official handout:
 
 ```bash
@@ -110,7 +111,8 @@ pip install --no-build-isolation flash-attn   # optional, Part 5 bonus
 
 ### Lab 5 — LLM deployment on edge devices
 
-- Official handout and submission template: [lab5/README.md](./lab5/README.md).
+- Completed report: [lab5/Report.md](./lab5/Report.md); generated kernel diagrams and plotting scripts are under [lab5/figures/](./lab5/figures/).
+- Official materials: [Lab 5 folder](https://drive.google.com/drive/folders/1ZA9ZpLFHnEXr8sJ-e4lkJyMGvtoQ55A0), plus the local [handout](./lab5/MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx) and [report template](./lab5/Report%20template_%20MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx).
 - The TinyChatEngine tutorial is vendored under `lab5/tinychat-tutorial/` at upstream commit `f241215`. The LLaMA2-7B-chat int4 weights (~5.3 GB) are gitignored; download them with:
 
 ```bash
@@ -123,9 +125,11 @@ python download_model.py --model LLaMA_7B_2_chat --QM QM_x86   # Intel/AMD
 
 ```bash
 ./evaluate.sh reference          # sanity check / baseline
-./evaluate.sh loop_unrolling     # one technique at a time
+./evaluate.sh all_techniques     # final combined kernel
 ./evaluate.sh                    # all implementations
 ```
+
+- The x86 implementations are complete. On the reference machine, `all_techniques` reaches **15.617 ms** and **16.785703 GOPs**, about **16.40×** the reference GOPs.
 
 ## Repository Structure
 
@@ -133,7 +137,7 @@ python download_model.py --model LLaMA_7B_2_chat --QM QM_x86   # Intel/AMD
 .
 ├── lab0/
 │   └── lab0.ipynb                 # Completed: VGG-11 variant on CIFAR-10 (92.62%)
-├── lab1_gpu_basics/
+├── lab1/
 │   ├── README.md                  # Official Lab 1 handout and point breakdown
 │   ├── lab1.ipynb                 # Completed notebook (local RTX 4060)
 │   ├── decode_layer_tracing.png   # Decode profiling timeline
@@ -148,6 +152,8 @@ python download_model.py --model LLaMA_7B_2_chat --QM QM_x86   # Intel/AMD
 │   └── lab4_quantization.ipynb    # Completed notebook (NVIDIA A30; local offline setup)
 ├── lab5/
 │   ├── README.md                  # Lab 5 setup, source snapshot, model download
+│   ├── Report.md                  # Completed lab report
+│   ├── figures/                   # Kernel diagrams and plotting scripts
 │   ├── MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx
 │   ├── Report template_ ...docx   # Official report template
 │   └── tinychat-tutorial/         # Vendored TinyChatEngine source (model weights ignored)
@@ -156,7 +162,7 @@ python download_model.py --model LLaMA_7B_2_chat --QM QM_x86   # Intel/AMD
 └── README.md
 ```
 
-Future labs will live in their own `labN_<topic>/` directories when local materials are provided.
+Each lab has its own top-level directory; Lab 5 is code-based and includes its vendored source tree alongside the report.
 
 ## Acknowledgements
 

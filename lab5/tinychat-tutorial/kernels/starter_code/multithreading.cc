@@ -110,7 +110,23 @@ void MatmulOperator::mat_mul_multithreading(struct matmul_params* params) {
     struct multithreading_thread_args threads_args[num_thread];
 
     // TODO: Thread creation
+    // Split the output columns across the worker threads. Each worker scans
+    // all rows but only computes the columns in [start, end).
+    const int cols_per_thread = n / num_thread;
+    for (int i = 0; i < num_thread; i++) {
+        threads_args[i].start = i * cols_per_thread;
+        threads_args[i].end = (i == num_thread - 1) ? n : (i + 1) * cols_per_thread;
+        threads_args[i].params = params;
+        int ret = pthread_create(&thread_pool[i], NULL, multithreading_worker_func, &threads_args[i]);
+        assert(ret == 0);
+        (void)ret;
+    }
 
     // TODO: Join threads
+    for (int i = 0; i < num_thread; i++) {
+        int ret = pthread_join(thread_pool[i], NULL);
+        assert(ret == 0);
+        (void)ret;
+    }
 };
 }  // namespace matmul

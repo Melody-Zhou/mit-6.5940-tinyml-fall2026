@@ -2,8 +2,10 @@
 
 Official materials:
 
+- [Lab 5 folder](https://drive.google.com/drive/folders/1ZA9ZpLFHnEXr8sJ-e4lkJyMGvtoQ55A0)
 - [Lab handout](./MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx)
 - [Report template](./Report%20template_%20MIT_Efficient_AI_Lab_5_Optimize_LLM_on_Edge.docx)
+- [TinyChatEngine tutorial source](https://github.com/mit-han-lab/tinychat-tutorial)
 
 ## Source snapshot
 
@@ -45,9 +47,11 @@ cd lab5/tinychat-tutorial/transformer
 ./evaluate.sh                    # all implementations
 ```
 
-The implementations to complete are in
-[`kernels/starter_code/`](./tinychat-tutorial/kernels/starter_code/). On x86
-complete the `QM_x86` paths; on ARM complete the `QM_ARM` paths.
+The completed x86 implementations are in
+[`kernels/starter_code/`](./tinychat-tutorial/kernels/starter_code/), and the
+finished report is [`Report.md`](./Report.md). Generated kernel diagrams and
+plotting scripts are under [`figures/`](./figures/). On x86, the `QM_x86`
+paths are implemented; the ARM paths remain unchanged.
 
 The official submission requires a PDF report (use the template above) and a
 patch generated with `git diff`. Generate it from inside the vendored source
